@@ -74,7 +74,7 @@ def Estimation_damage():
         # w_df = damage_parameter.estimate_w_met2(fe_paths)
         # Method 5:
         output_results_path = os.path.sep.join(
-            [BASE_PATH + "\\processed", "parameters", "damage_parameter"]
+            [BASE_PATH + "/processed", "parameters", "damage_parameter"]
         )
         m = st.session_state.config['k']*st.session_state.config['bn_mean']
         w_df = damage_parameter.estimate_w_met5(fe_paths, m, st.session_state.config['c'], st.session_state.config['k'], scale_sizes, config.material_param_delta0)

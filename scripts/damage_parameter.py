@@ -615,7 +615,7 @@ if __name__ == "__main__":
 
     # Saving the results
     output_results_path = os.path.sep.join(
-        [BASE_PATH+"\\processed", "parameters", "damage_parameter"]
+        [BASE_PATH+"/processed", "parameters", "damage_parameter"]
     )
 
     print("[INFO]: *Saving Results: ", output_results_path + "/met_1.csv")

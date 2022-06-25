@@ -12,8 +12,8 @@ import data_utils
 # Get data from txt and rpt folder:
 # make sure the "Data" folder is in the same directory as the py code
 
-txt_files = glob.glob(os.path.join(os.getcwd(),"**\\*.txt"),recursive=True)
-rpt_files = glob.glob(os.path.join(os.getcwd(),"**\\*.rpt"),recursive=True)
+txt_files = glob.glob(os.path.join(os.getcwd(),"**/*.txt"),recursive=True)
+rpt_files = glob.glob(os.path.join(os.getcwd(),"**/*.rpt"),recursive=True)
 
 # Get experimental data and make experimental dataframe: not in module cause data source may change
 '''experimental_txt = []
