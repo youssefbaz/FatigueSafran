@@ -1,9 +1,9 @@
 import streamlit as st
-from pages.page_2 import estimate_process
-from pages.page_3 import Bayesian
-from pages.page_4 import failure_probability
-from pages.page_5 import value
-from pages.page_6 import show_pdf
+from pages.estimate_damage import estimate_process
+from pages.compute_bayesian import Bayesian
+from pages.failure_proba import failure_probability
+from pages.custom_variables import value
+from pages.doc import show_pdf
 from scripts import config
 
 st.set_page_config(page_title='Safran')
