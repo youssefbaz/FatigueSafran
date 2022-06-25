@@ -18,6 +18,7 @@ def failure_probability():
         twoD_array()
 
         threeD_array(gamma)
-
+        print("done calculation")
+        st.write("done")
 # failure_probability()
 
