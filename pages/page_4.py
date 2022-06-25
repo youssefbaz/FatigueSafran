@@ -15,10 +15,13 @@ def failure_probability():
     Failure_probability = st.button("Calculation of the failure probability ")
     if Failure_probability:
         gamma = st.session_state.config['gamma']
-        twoD_array()
+        fig=twoD_array()
+        st.write(fig)
 
-        threeD_array(gamma)
+        fig1=threeD_array(gamma)
+        st.write(fig1)
         print("done calculation")
         st.write("done")
+
 # failure_probability()
 
