@@ -1,6 +1,5 @@
 import streamlit as st
-from scripts.Failure_proba2 import twoD_array
-from scripts.Failure_proba2 import threeD_array
+from scripts.Failure_proba2 import calculate_failure
 from PIL import Image
 import os
 
@@ -15,13 +14,11 @@ def failure_probability():
     Failure_probability = st.button("Calculation of the failure probability ")
     if Failure_probability:
         gamma = st.session_state.config['gamma']
-        fig=twoD_array()
+        status=st.text("calculating using gamma "+str(gamma))
+        fig, fig1 = calculate_failure(gamma)
         st.write(fig)
-
-        fig1=threeD_array(gamma)
         st.write(fig1)
-        print("done calculation")
-        st.write("done")
+        status.text("done calculation")
 
 # failure_probability()
 
