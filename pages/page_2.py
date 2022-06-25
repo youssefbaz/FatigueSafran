@@ -42,7 +42,6 @@ def Process_data():
         print("process ", FE_paths, EXP_paths)
         data_utils.process_data(FE_paths, EXP_paths)
         for test_path in fe_processed_paths:
-            st.write(fe_processed_paths)
             print(" reading "+test_path)
             data = data_utils.read_processed_data(test_path)
 
