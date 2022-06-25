@@ -52,6 +52,7 @@ def Process_data():
         file_name = os.path.basename(test_path)
         scale_size = re.findall(r"\d+", file_name)
         st.subheader(f"Processed sample {scale_size}:")
+        st.write(file_name)
         print("read", scale_size, " from ", file_name)
         st.dataframe(data.head(10))
 
