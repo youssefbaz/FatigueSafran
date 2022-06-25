@@ -1,5 +1,5 @@
 import streamlit as st
-from pages.estimate_damage import estimate_process
+from pages.damage import estimate_process
 from pages.compute_bayesian import Bayesian
 from pages.failure_proba import failure_probability
 from pages.custom_variables import value
