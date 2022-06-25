@@ -1,0 +1,12 @@
+
+
+LE.max S.max
+
+https://classes.engineering.wustl.edu/2009/spring/mase5513/abaqus/docs/v6.6/books/usb/default.htm
+
+Output
+ 5.File Output Format
+  5.1.1 Accessing the results file: overview
+   5.1.2 Results file output format
+    Records written for any element file output request
+    Record key: 11 (S), 89 (LE)
