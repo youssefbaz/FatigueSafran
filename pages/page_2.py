@@ -41,21 +41,20 @@ def Process_data():
         fe_raw_paths, fe_processed_paths = FE_paths
         print("process ", FE_paths, EXP_paths)
         data_utils.process_data(FE_paths, EXP_paths)
+        for test_path in fe_processed_paths:
+            st.write(fe_processed_paths)
+            print(" reading "+test_path)
+            data = data_utils.read_processed_data(test_path)
 
-        test_path = fe_processed_paths[0]
-        st.write(fe_processed_paths)
-        print(" reading "+test_path)
-        data = data_utils.read_processed_data(test_path)
+            data_load_state.text("[INFO]: Processed done!")
 
-        data_load_state.text("[INFO]: Processed done!")
-
-        # Read data for each scale
-        file_name = os.path.basename(test_path)
-        scale_size = re.findall(r"\d+", file_name)
-        st.subheader(f"Processed sample {scale_size}:")
-        st.write(file_name)
-        print("read", scale_size, " from ", file_name)
-        st.dataframe(data.head(10))
+            # Read data for each scale
+            file_name = os.path.basename(test_path)
+            scale_size = re.findall(r"\d+", file_name)
+            st.subheader(f"Processed sample {scale_size}:")
+            st.write(file_name)
+            print("read", scale_size, " from ", file_name)
+            st.dataframe(data.head(10))
 
 def Estimation_damage():
     st.title("Estimation damage Parameter")
