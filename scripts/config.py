@@ -28,7 +28,7 @@ if os.path.exists(DEST_N0):
 
 Nf_list=[]
 if os.path.exists(DEST_N0):
-    with open(PROCESSED_DATA_EXP+"\\Test_results_different_scales_CHP.csv") as f:
+    with open(PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
         reader = csv.reader(f, delimiter=";")
         next(reader)
         d={}
