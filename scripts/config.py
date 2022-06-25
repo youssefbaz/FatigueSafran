@@ -26,24 +26,24 @@ if os.path.exists(DEST_N0):
         next(reader_met)
         met = {row[0]:float(row[6]) for row in reader_met}
 
-
-
-with open(PROCESSED_DATA_EXP+"\\Test_results_different_scales_CHP.csv") as f:
-    reader = csv.reader(f, delimiter=";")
-    next(reader)
-    d={}
-    for row in reader:
-        value = int(float(row[0]))
-        observed_Nf.append(value)
-        if not row[1] in d:
-            d[row[1]]=[]
-        d[row[1]].append(value)
-    dict_means={}
-    for k in d.keys():
-        dict_means[k]=statistics.mean(d[k])
-    Nf_list=list(dict_means.values())
-    print(observed_Nf)
-    print(Nf_list)
+Nf_list=[]
+if os.path.exists(DEST_N0):
+    with open(PROCESSED_DATA_EXP+"\\Test_results_different_scales_CHP.csv") as f:
+        reader = csv.reader(f, delimiter=";")
+        next(reader)
+        d={}
+        for row in reader:
+            value = int(float(row[0]))
+            observed_Nf.append(value)
+            if not row[1] in d:
+                d[row[1]]=[]
+            d[row[1]].append(value)
+        dict_means={}
+        for k in d.keys():
+            dict_means[k]=statistics.mean(d[k])
+        Nf_list=list(dict_means.values())
+        print(observed_Nf)
+        print(Nf_list)
 
 # DIFFERENTIATE INITIAL BN FROM EXP DATA IN THE LIKELIHOOD AND THE BN IN THE PRIOR WHICH AR HE BELIEFS
 bn_init_values = (1.149, 0.7)

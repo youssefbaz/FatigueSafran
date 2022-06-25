@@ -6,7 +6,7 @@ import pandas as pd
 from scripts import data_utils
 import os
 
-pio.kaleido.scope.mathjax = None
+#pio.kaleido.scope.mathjax = None
 
 # from Experimental_data_safran import experimental_df
 BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
@@ -14,6 +14,7 @@ _, EXP_paths = data_utils.get_paths()
 _, expmtl_processed_paths = EXP_paths
 # print(expmtl_processed_paths[0])
 experimental_df = data_utils.read_processed_data(expmtl_processed_paths[0])
+
 
 # print(experimental_df)
 
