@@ -20,10 +20,11 @@ Nf_list=[]
 observed_Nf = []
 
 met={}
-with open(DEST_N0, mode='r') as inp:
-    reader_met = csv.reader(inp, delimiter=",")
-    next(reader_met)
-    met = {row[0]:float(row[6]) for row in reader_met}
+if os.path.exists(DEST_N0):
+    with open(DEST_N0, mode='r') as inp:
+        reader_met = csv.reader(inp, delimiter=",")
+        next(reader_met)
+        met = {row[0]:float(row[6]) for row in reader_met}
 
 
 
