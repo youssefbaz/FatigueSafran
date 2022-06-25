@@ -22,12 +22,12 @@ def main_page():
 
 page_names_to_funcs = {
     "Main Page": main_page,
-    "Procesing data and Estimation of damage parameter": estimate_process,
+    "1 - Custom Variables": value,
+    "2 - Procesing data and Estimation of damage parameter": estimate_process,
     #"Processing data:": Estimation_damage,
     #"Estimation of damage": Estimation_damage,
-    "Compute the Bayesian": Bayesian,
-    "Calculate a failure probability": failure_probability,
-    "Custom Variables": value,
+    "3 - Compute the Bayesian": Bayesian,
+    "4 - Calculate a failure probability": failure_probability,
     "Documentation":show_pdf
 }
 
