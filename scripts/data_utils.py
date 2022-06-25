@@ -87,7 +87,7 @@ def get_paths():
     # Get FE rpt files paths:
     fe_raw_path = os.path.sep.join([config.RAW_DATA_PATH, "finite_elements"])
     print("[INFO]: *.rpt files path: ", fe_raw_path)
-    fe_raw_paths = glob.glob(os.path.join(fe_raw_path, "**\\*.rpt"), recursive=True)
+    fe_raw_paths = glob.glob(os.path.join(fe_raw_path, "**/*.rpt"), recursive=True)
 
     # Creating processed paths
     fe_processed_paths = [
@@ -102,7 +102,7 @@ def get_paths():
     print("[INFO]: *.txt files path: ", exp_raw_path)
 
     expmtl_raw_paths = glob.glob(
-        os.path.join(exp_raw_path, "**\\*.txt"), recursive=True
+        os.path.join(exp_raw_path, "**/*.txt"), recursive=True
     )
 
     # Creating processed paths
