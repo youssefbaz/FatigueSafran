@@ -113,7 +113,8 @@ def threeD_array(gamma):
                       scene=dict(yaxis=dict(dtick=1, type='log')))
     fig.update_xaxes(title_text="Number of cycles in logarithmic scale", type="log")
     fig.update_yaxes(title_text="Damage parameter through N0(w)")
-    fig.show()
+    #fig.show()
+    return fig
     # plt.savefig(BASE_PATH + "/threeD-new.png")
 
 def twoD_array():
@@ -137,7 +138,9 @@ def twoD_array():
     fig.update_xaxes(title_text="Number of cycles in logarithmic scale", type="log")
     fig.update_yaxes(showline=True, gridcolor='grey', linewidth=0.1)
     fig.update_layout(plot_bgcolor="white", title="Failure probability for different gamma sizes")
-    fig.show()
+   # fig.show()
+    return fig
+
     print('ici')
     print(BASE_PATH)
     # plt.savefig(BASE_PATH + "/twoD-test-sauv.png")

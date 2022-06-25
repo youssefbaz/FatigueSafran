@@ -36,14 +36,14 @@ def Process_data():
     if process_button:
         # Create a text element and let the reader know the data is loading.
         data_load_state = st.text("[INFO]: Processing data ...")
-        sleep(1)
 
         FE_paths, EXP_paths = data_utils.get_paths()
         fe_raw_paths, fe_processed_paths = FE_paths
+        print("process ", FE_paths, EXP_paths)
         data_utils.process_data(FE_paths, EXP_paths)
 
         test_path = fe_processed_paths[0]
-
+        print(" reading "+test_path)
         data = data_utils.read_processed_data(test_path)
 
         data_load_state.text("[INFO]: Processed done!")
@@ -52,6 +52,7 @@ def Process_data():
         file_name = os.path.basename(test_path)
         scale_size = re.findall(r"\d+", file_name)
         st.subheader(f"Processed sample {scale_size}:")
+        print("read", scale_size, " from ", file_name)
         st.dataframe(data.head(10))
 
 def Estimation_damage():
