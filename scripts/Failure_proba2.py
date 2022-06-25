@@ -12,7 +12,7 @@ import os
 BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
 _, EXP_paths = data_utils.get_paths()
 _, expmtl_processed_paths = EXP_paths
-print("exp:", expmtl_processed_paths[0])
+print("exp:", expmtl_processed_paths, EXP_paths)
 experimental_df = data_utils.read_processed_data(expmtl_processed_paths[0])
 
 
