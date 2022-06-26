@@ -7,7 +7,11 @@ import statistics
 from streamlit.scriptrunner import add_script_run_ctx
 session_id=add_script_run_ctx().streamlit_script_run_ctx.session_id
 
-path=os.path.join(os.path.dirname(__file__), "../data/sessions/",str(date.today())+"_"+session_id)
+session_path = os.path.join(os.path.dirname(__file__), "../data/sessions/")
+
+if not os.path.exists(session_path):
+    os.mkdir(session_path)
+path=os.path.join(session_path,str(date.today())+"_"+session_id)
 demoMode=False
 if demoMode:
     path=os.path.join(os.path.dirname(__file__), "../data/demo")
