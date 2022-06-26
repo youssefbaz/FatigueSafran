@@ -17,13 +17,14 @@ def Bayesian():
     if calculation_bayesian:
 
         calcul_state = st.text("[INFO]: Calculating...")
-        calculate_bayesian(st.session_state.config)
+        fig_trace, fig_posterior = calculate_bayesian(st.session_state.config)
 
-        image1 = Image.open(BASE_PATH+"/image_trace.png")
-        st.image(image1, caption='image trace')
-
-        image2 = Image.open(BASE_PATH+"/image_posterior.png")
-        st.image(image2, caption='image trace')
+        #image1 = Image.open(BASE_PATH+"/image_trace.png")
+        #st.image(image1, caption='image trace')
+        st.write(fig_trace)
+        #image2 = Image.open(BASE_PATH+"/image_posterior.png")
+        #st.image(image2, caption='image trace')
+        st.write(fig_posterior)
 
         calcul_state = st.text("[INFO]: Calculating done")
 

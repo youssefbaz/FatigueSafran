@@ -9,9 +9,9 @@ import os
 #pio.kaleido.scope.mathjax = None
 def calculate_failure(gamma):
     # from Experimental_data_safran import experimental_df
-    BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
     _, EXP_paths = data_utils.get_paths()
     _, expmtl_processed_paths = EXP_paths
+    # Test_results_different_scales_CHP.txt
     print("exp:", expmtl_processed_paths, EXP_paths)
     experimental_df = data_utils.read_processed_data(expmtl_processed_paths[0])
 
@@ -112,7 +112,7 @@ def calculate_failure(gamma):
         fig.update_yaxes(title_text="Damage parameter through N0(w)")
         #fig.show()
         return fig
-        # plt.savefig(BASE_PATH + "/threeD-new.png")
+        # plt.savefig(config.IMAGES_PATH + "/threeD-new.png")
 
     def twoD_array():
         fig = go.Figure()
@@ -138,10 +138,8 @@ def calculate_failure(gamma):
        # fig.show()
         return fig
 
-        print('ici')
-        print(BASE_PATH)
-        # plt.savefig(BASE_PATH + "/twoD-test-sauv.png")
-        # fig.write_image(BASE_PATH + "/twoDtiiuet.png")
+        # plt.savefig(config.IMAGES_PATH + "/twoD-test-sauv.png")
+        # fig.write_image(config.IMAGES_PATH + "/twoDtiiuet.png")
         print('done')
     return (twoD_array(),threeD_array(gamma))
 if __name__ == "__main__":

@@ -61,7 +61,7 @@ class FatigueLife_BayesianCalibration:
             setattr(self, key, value)
         # self.inference_data = self.get_posterior_samples()
 
-    def get_posterior_samples(self):
+    def get_posterior_samples_and_fig(self):
         with pm.Model() as m:
             bn = pm.TruncatedNormal("bn", mu=config.bn_priors[0], sigma=config.bn_priors[1], lower=0.001)
             #likelihood_bn = Modified_Weibull("slope", bn=bn,
@@ -76,21 +76,23 @@ class FatigueLife_BayesianCalibration:
             s = az.summary(idata)
             print(s)
 
-            BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
             trace = az.plot_trace(idata)
             fig_trace = trace.ravel()[0].figure
             posterior = az.plot_posterior(idata)
 
-            print(BASE_PATH)
-            fig_trace.savefig(BASE_PATH+"/image_trace.png")
+            fig_trace.savefig(config.IMAGES_PATH+"/image_trace.png")
             #fig_posterior.savefig(BASE_PATH+"/image_posterior.png")
-            posterior.figure.savefig(BASE_PATH+"/image_posterior.png")
+            posterior.figure.savefig(config.IMAGES_PATH+"/image_posterior.png")
             #az.plot_trace(idata)
             #az.plot_posterior(idata)
-            return idata, s
+            return idata, s, fig_trace, posterior.figure
 
 def calculate_bayesian(settings):
     #N0_w=948.22
+    print("calculate bayesian using ", config.met)
+    if not config.met:
+        print(" empry met, try reloading")
+        config.get_met()
     N0_w = config.met['40']
     print(N0_w)
     print('calculate_bayesian')
@@ -105,8 +107,8 @@ def calculate_bayesian(settings):
         'observed_Nf': config.observed_Nf
     }
 
-    A, s = FatigueLife_BayesianCalibration(sample_size=5000, step="Metropolis", observations=config.observed_Nf,
-                                           bn_init_values=[settings['bn_mean'],settings['bn_std']]).get_posterior_samples()
+    A, s, fig_trace, fig_posterior = FatigueLife_BayesianCalibration(sample_size=5000, step="Metropolis", observations=config.observed_Nf,
+                                           bn_init_values=[settings['bn_mean'],settings['bn_std']]).get_posterior_samples_and_fig()
 
     x = A["bn"]
 
@@ -130,6 +132,8 @@ def calculate_bayesian(settings):
     k_ = np.array(k)
     print(len(k))
     print(len(k_[k_ < 0.005]))
+
+    return fig_trace, fig_posterior
 
 #if __name__=="__main__":
 #    calculate_bayesian()

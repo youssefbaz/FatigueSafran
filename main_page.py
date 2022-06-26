@@ -7,6 +7,7 @@ from pages.doc import show_pdf
 from scripts import config
 
 st.set_page_config(page_title='Safran')
+st.write(config.BASE_PATH)
 def main_page():
 
     st.text("Steps to Follow ")

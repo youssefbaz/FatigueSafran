@@ -1,18 +1,54 @@
 import os
 import streamlit as st
-
+from datetime import date, datetime
 # define the base path to the input data
 import statistics
 
-BASE_PATH = os.path.abspath(os.path.join(os.path.realpath(__file__), "../../data"))
+from streamlit.scriptrunner import add_script_run_ctx
+session_id=add_script_run_ctx().streamlit_script_run_ctx.session_id
 
-RAW_DATA_PATH = os.path.sep.join([BASE_PATH, "raw", ])
+path=os.path.join(os.path.dirname(__file__), "../data/sessions/",str(date.today())+"_"+session_id)
+demoMode=False
+if demoMode:
+    path=os.path.join(os.path.dirname(__file__), "../data/demo")
+
+os.sync()
+if not os.path.exists(path):
+    print("init session on "+path)
+    os.mkdir(path)
+    os.sync()
+    print("Directory '%s' created successfully" %path)
+    os.mkdir(os.path.join(path,"processed"))
+    os.mkdir(os.path.join(path,"raw"))
+    os.sync()
+    os.mkdir(os.path.join(path,"raw","finite_elements"))
+    os.mkdir(os.path.join(path,"raw","experimental"))
+    os.sync()
+    for section in ["finite_elements","experimental","parameters", "images"]:
+        os.mkdir(os.path.join(path,"processed", section))
+    with open(os.path.join(path,"_session_config.py"),"w") as session_config:
+        session_config.write("creation_date="+str(datetime.now()))
+else:
+    print("config already exist in "+ path)
+
+BASE_PATH=os.path.abspath(path)
+
+# input 
+RAW_DATA_PATH = os.path.sep.join([BASE_PATH, "raw", "finite_elements" ])
+# Test_results_different_scales_CHP.txt
+EXPERIMENTAL_PATH = os.path.sep.join([BASE_PATH, "raw", "experimental" ])
+#DEMO_EXPERIMENTAL_PATH = os.path.join([os.path.dirname(__file__), "../data/experimental"])
+
+# output
 PROCESSED_DATA_PATH = os.path.sep.join([BASE_PATH, "processed", "finite_elements"])
 
 #read data from experimental file
 PROCESSED_DATA_EXP = os.path.sep.join([BASE_PATH, "processed", "experimental"])
+DEMO_PROCESSED_DATA_EXP = os.path.join(os.path.dirname(__file__), "../data/experimental")
 #get the Observed_Nf and Nf_list data from experimental data
-DEST_N0 =os.path.sep.join([BASE_PATH, "processed", "parameters","damage_parameter",'met_5.csv'])
+DEST_N0 =os.path.sep.join([BASE_PATH, "processed", "parameters",'met_5.csv'])
+# images path fo bayesian (no more needed ?)
+IMAGES_PATH = os.path.sep.join([BASE_PATH, "processed", "images" ])
 
 import csv
 
@@ -20,15 +56,25 @@ Nf_list=[]
 observed_Nf = []
 
 met={}
-if os.path.exists(DEST_N0):
-    with open(DEST_N0, mode='r') as inp:
-        reader_met = csv.reader(inp, delimiter=",")
-        next(reader_met)
-        met = {row[0]:float(row[6]) for row in reader_met}
-
+def get_met():
+    global met
+    if os.path.exists(DEST_N0):
+        print("met present")
+        with open(DEST_N0, mode='r') as inp:
+            reader_met = csv.reader(inp, delimiter=",")
+            next(reader_met)
+            met = {row[0]:float(row[6]) for row in reader_met}
+            print("readed met ", met)
+    else:
+        print("no met")
+    return met
+print("** import")
+get_met()
+print("** done import")
 Nf_list=[]
 if os.path.exists(DEST_N0):
-    with open(PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
+    with open(DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
+    #with open(PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
         reader = csv.reader(f, delimiter=";")
         next(reader)
         d={}
@@ -44,7 +90,8 @@ if os.path.exists(DEST_N0):
         Nf_list=list(dict_means.values())
         print(observed_Nf)
         print(Nf_list)
-
+else:
+    print(" no scales")
 # DIFFERENTIATE INITIAL BN FROM EXP DATA IN THE LIKELIHOOD AND THE BN IN THE PRIOR WHICH AR HE BELIEFS
 bn_init_values = (1.149, 0.7)
 bn_priors = (1.45, 0.32)

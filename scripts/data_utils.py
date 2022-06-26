@@ -85,9 +85,9 @@ def read_processed_data(file_path, file_sep=";"):
 
 def get_paths():
     # Get FE rpt files paths:
-    fe_raw_path = os.path.sep.join([config.RAW_DATA_PATH, "finite_elements"])
+    fe_raw_path = config.RAW_DATA_PATH
     print("[INFO]: *.rpt files path: ", fe_raw_path)
-    fe_raw_paths = glob.glob(os.path.join(fe_raw_path, "**/*.rpt"), recursive=True)
+    fe_raw_paths = glob.glob(os.path.join(fe_raw_path, "*.rpt"))
 
     # Creating processed paths
     fe_processed_paths = [
@@ -98,19 +98,19 @@ def get_paths():
 
     # Get Experimental data .txt files paths:
 
-    exp_raw_path = os.path.sep.join([config.RAW_DATA_PATH, "experimental"])
+    exp_raw_path = config.EXPERIMENTAL_PATH# os.path.sep.join([output_path, "experimental"])
     print("[INFO]: *.txt files path: ", exp_raw_path)
-
+ 
     expmtl_raw_paths = glob.glob(
-        os.path.join(exp_raw_path, "**/*.txt"), recursive=True
+        os.path.join(exp_raw_path, "*.txt")
     )
-
+ 
     # Creating processed paths
     expmtl_processed_path = [
-        path.replace("raw", "processed").replace("txt", "csv")
+        path.replace(config.EXPERIMENTAL_PATH, config.PROCESSED_DATA_EXP).replace("txt", "csv")
         for path in expmtl_raw_paths
     ]
-
+ 
     print("[INFO]: Files to process: ", *expmtl_raw_paths, sep="\n")
 
     FE_paths = (fe_raw_paths, fe_processed_paths)
