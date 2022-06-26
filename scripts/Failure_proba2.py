@@ -6,13 +6,17 @@ import pandas as pd
 from scripts import data_utils
 import os
 
-#pio.kaleido.scope.mathjax = None
+# in windows if we want to save fig 
+#pio.kaleido.scope.mathjax = None or Downgrad kaleido
 def calculate_failure(gamma):
     # from Experimental_data_safran import experimental_df
     _, EXP_paths = data_utils.get_paths()
     _, expmtl_processed_paths = EXP_paths
     # Test_results_different_scales_CHP.txt
     print("exp:", expmtl_processed_paths, EXP_paths)
+    if not expmtl_processed_paths:
+        return False, "no processed files found. have runned the steps before ?"
+
     experimental_df = data_utils.read_processed_data(expmtl_processed_paths[0])
 
 

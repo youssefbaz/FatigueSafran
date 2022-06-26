@@ -19,10 +19,13 @@ def Process_data():
 
     st.title("Processing data Page")
     uploaded_files = st.file_uploader("Choose a  file", accept_multiple_files=True)
+    hasText=False
+    "test".lower
     for uploaded_file in uploaded_files:
-        if uploaded_file.name.endswith(".rpt"):
+        if uploaded_file.name.lower().endswith(".rpt"):
             destination = os.path.abspath(config.RAW_DATA_PATH)
-        else:
+        elif uploaded_file.name.lower().endswith(".txt"):
+            hasText=True
             destination = os.path.abspath(config.EXPERIMENTAL_PATH)
         #st.write("type:", uploaded_file)
         bytes_data= uploaded_file.read()
@@ -37,6 +40,7 @@ def Process_data():
     process_button = st.button("Process the data")
 
     if process_button:
+
         # Create a text element and let the reader know the data is loading.
         data_load_state = st.text("[INFO]: Processing data ...")
 
@@ -46,6 +50,13 @@ def Process_data():
         if not fe_raw_paths and not fe_processed_paths:
             st.write("no file to process, please provide file using upload component above")
         else:
+            if not EXP_paths or (not EXP_paths[0] and not EXP_paths[1]):
+                st.warning("No test result provided. We'll use Test_results_different_scales_CHP.")
+                import shutil
+                print("=== copy "+config.DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv"+" ==> "+config.PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv")
+                shutil.copy(config.DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv", config.PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv")
+                os.sync()
+                config.get_nf()
             print("process ", FE_paths, EXP_paths)
             data_utils.process_data(FE_paths, EXP_paths)
             for test_path in fe_processed_paths:
@@ -68,14 +79,13 @@ def Estimation_damage():
 
     if estimate_button:
         w_estimate_state = st.text("[INFO]: Estimating w ...")
-
-        sleep(1)
-
+        print("[INFO]: Estimating w ...")
+        config.get_nf()
         FE_paths, EXP_paths = data_utils.get_paths()
         _, fe_processed_paths = FE_paths
 
-        fe_vol_paths = [v_path for v_path in fe_processed_paths if "_Vol" in v_path]
-        fe_ss_paths = [s_path for s_path in fe_processed_paths if "_SS" in s_path]
+        fe_vol_paths = [v_path for v_path in fe_processed_paths if "_"+data_utils.VOL_EXT in v_path]
+        fe_ss_paths = [s_path for s_path in fe_processed_paths if "_"+data_utils.SS_EXT in s_path]
         fe_paths = (fe_ss_paths, fe_vol_paths)
 
         # Method 2:
@@ -84,7 +94,9 @@ def Estimation_damage():
         output_results_path = os.path.sep.join(
             [config.BASE_PATH, "processed", "parameters"]
         )
+        print("result should go to "+output_results_path)
         m = st.session_state.config['k']*st.session_state.config['bn_mean']
+        print(fe_paths, m, st.session_state.config)
         w_df = damage_parameter.estimate_w_met5(fe_paths, m, st.session_state.config['c'], st.session_state.config['k'], scale_sizes, config.material_param_delta0)
         w_df.to_csv(os.path.join(output_results_path, "met_5.csv"), index=None)
 

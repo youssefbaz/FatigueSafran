@@ -93,6 +93,8 @@ def calculate_bayesian(settings):
     if not config.met:
         print(" empry met, try reloading")
         config.get_met()
+        if '40' not in config.met:
+            return False, "met not found, check that you runned the steps before."
     N0_w = config.met['40']
     print(N0_w)
     print('calculate_bayesian')

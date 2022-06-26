@@ -8,7 +8,8 @@ from scripts import config
 # OS interface
 import os
 import glob
-
+SS_EXT="SS"
+VOL_EXT="Vol"
 
 def create_finite_element_df(file_path, output_path, skiprows=19, skipfooter=9):
     """
@@ -21,7 +22,7 @@ def create_finite_element_df(file_path, output_path, skiprows=19, skipfooter=9):
     Returns:
         None
     """
-    if "SS" in file_path:
+    if SS_EXT in file_path:
         names = ["label", "LE_max", "S_max"]
         dtype = {"label": np.int64, "LE_max": np.float64, "S_max": np.float64}
     else:
@@ -84,6 +85,7 @@ def read_processed_data(file_path, file_sep=";"):
 
 
 def get_paths():
+    print("INITIAL get_paths "+config.RAW_DATA_PATH)
     # Get FE rpt files paths:
     fe_raw_path = config.RAW_DATA_PATH
     print("[INFO]: *.rpt files path: ", fe_raw_path)
@@ -104,7 +106,7 @@ def get_paths():
     expmtl_raw_paths = glob.glob(
         os.path.join(exp_raw_path, "*.txt")
     )
- 
+    print(" looking for text in "+os.path.join(exp_raw_path, "*.txt"))
     # Creating processed paths
     expmtl_processed_path = [
         path.replace(config.EXPERIMENTAL_PATH, config.PROCESSED_DATA_EXP).replace("txt", "csv")

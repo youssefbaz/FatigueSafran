@@ -541,7 +541,7 @@ def estimate_w_met5(fe_paths, m, c, k, scale_sizes, material_param_delta0):
         ss_vol_df["wV"] = ss_vol_df["w"] * ss_vol_df["V"]
 
         w_dict_met5[scale_size] = ss_vol_df
-
+    print(w_dict_met5)
     for scale in scale_sizes:
 
         # Adjust w computation:
@@ -598,8 +598,8 @@ if __name__ == "__main__":
     FE_paths, EXP_paths = data_utils.get_paths()
     _, fe_processed_paths = FE_paths
 
-    fe_vol_paths = [v_path for v_path in fe_processed_paths if "_Vol" in v_path]
-    fe_ss_paths = [s_path for s_path in fe_processed_paths if "_SS" in s_path]
+    fe_vol_paths = [v_path for v_path in fe_processed_paths if "_"+data_utils.VOL_EXT in v_path]
+    fe_ss_paths = [s_path for s_path in fe_processed_paths if "_"+data_utils.SS_EXT in s_path]
     fe_paths = (fe_ss_paths, fe_vol_paths)
 
     # Method 1:

@@ -45,8 +45,8 @@ if estimate_button:
 
     _, fe_processed_paths = data_utils.get_paths()
 
-    fe_vol_paths = [v_path for v_path in fe_processed_paths if "_Vol" in v_path]
-    fe_ss_paths = [s_path for s_path in fe_processed_paths if "_SS" in s_path]
+    fe_vol_paths = [v_path for v_path in fe_processed_paths if "_"+data_utils.VOL_EXT in v_path]
+    fe_ss_paths = [s_path for s_path in fe_processed_paths if "_"+data_utils.SS_EXT in s_path]
     fe_paths = (fe_ss_paths, fe_vol_paths)
 
     w_df = damage_parameter.estimate_w(fe_paths)

@@ -16,9 +16,12 @@ def failure_probability():
         gamma = st.session_state.config['gamma']
         status=st.text("calculating using gamma "+str(gamma))
         fig, fig1 = calculate_failure(gamma)
-        st.write(fig)
-        st.write(fig1)
-        status.text("done calculation")
+        if not fig:
+            st.warning("Error "+str(fig1))
+        else:
+            st.write(fig)
+            st.write(fig1)
+            status.text("done calculation")
 
 # failure_probability()
 

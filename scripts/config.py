@@ -4,36 +4,39 @@ from datetime import date, datetime
 # define the base path to the input data
 import statistics
 
-from streamlit.scriptrunner import add_script_run_ctx
-session_id=add_script_run_ctx().streamlit_script_run_ctx.session_id
 
-session_path = os.path.join(os.path.dirname(__file__), "../data/sessions/")
 
-if not os.path.exists(session_path):
-    os.mkdir(session_path)
-path=os.path.join(session_path,str(date.today())+"_"+session_id)
-demoMode=False
-if demoMode:
-    path=os.path.join(os.path.dirname(__file__), "../data/demo")
 
-os.sync()
-if not os.path.exists(path):
-    print("init session on "+path)
-    os.mkdir(path)
-    os.sync()
-    print("Directory '%s' created successfully" %path)
-    os.mkdir(os.path.join(path,"processed"))
-    os.mkdir(os.path.join(path,"raw"))
-    os.sync()
-    os.mkdir(os.path.join(path,"raw","finite_elements"))
-    os.mkdir(os.path.join(path,"raw","experimental"))
-    os.sync()
-    for section in ["finite_elements","experimental","parameters", "images"]:
-        os.mkdir(os.path.join(path,"processed", section))
-    with open(os.path.join(path,"_session_config.py"),"w") as session_config:
-        session_config.write("creation_date="+str(datetime.now()))
-else:
-    print("config already exist in "+ path)
+def init_session(demoMode=False):
+    from streamlit.scriptrunner import add_script_run_ctx
+    session_id=add_script_run_ctx().streamlit_script_run_ctx.session_id
+    print("session id "+str(session_id))
+    session_path = os.path.join(os.path.dirname(__file__), "../data/sessions/")
+    if not os.path.exists(session_path):
+        os.mkdir(session_path)
+    path=os.path.join(session_path,str(date.today())+"_"+session_id)
+    if demoMode:
+        path=os.path.join(os.path.dirname(__file__), "../data/demo")
+    if not os.path.exists(path):
+        print("init session on "+path)
+        os.mkdir(path)
+        os.sync()
+        print("Directory '%s' created successfully" %path)
+        os.mkdir(os.path.join(path,"processed"))
+        os.mkdir(os.path.join(path,"raw"))
+        os.sync()
+        os.mkdir(os.path.join(path,"raw","finite_elements"))
+        os.mkdir(os.path.join(path,"raw","experimental"))
+        os.sync()
+        for section in ["finite_elements","experimental","parameters", "images"]:
+            os.mkdir(os.path.join(path,"processed", section))
+        with open(os.path.join(path,"_session_config.py"),"w") as session_config:
+            session_config.write("creation_date="+str(datetime.now()))
+    else:
+        print("config already exist in "+ path)
+    return path
+
+path= init_session()
 
 BASE_PATH=os.path.abspath(path)
 
@@ -48,7 +51,7 @@ PROCESSED_DATA_PATH = os.path.sep.join([BASE_PATH, "processed", "finite_elements
 
 #read data from experimental file
 PROCESSED_DATA_EXP = os.path.sep.join([BASE_PATH, "processed", "experimental"])
-DEMO_PROCESSED_DATA_EXP = os.path.join(os.path.dirname(__file__), "../data/experimental")
+DEMO_PROCESSED_DATA_EXP = os.path.join(os.path.dirname(__file__), "../data/demo/processed/experimental")
 #get the Observed_Nf and Nf_list data from experimental data
 DEST_N0 =os.path.sep.join([BASE_PATH, "processed", "parameters",'met_5.csv'])
 # images path fo bayesian (no more needed ?)
@@ -56,12 +59,10 @@ IMAGES_PATH = os.path.sep.join([BASE_PATH, "processed", "images" ])
 
 import csv
 
-Nf_list=[]
-observed_Nf = []
 
 met={}
 def get_met():
-    global met
+    global met, DEST_N0
     if os.path.exists(DEST_N0):
         print("met present")
         with open(DEST_N0, mode='r') as inp:
@@ -70,32 +71,40 @@ def get_met():
             met = {row[0]:float(row[6]) for row in reader_met}
             print("readed met ", met)
     else:
-        print("no met")
+        print("no met in "+DEST_N0)
     return met
 print("** import")
 get_met()
 print("** done import")
-Nf_list=[]
-if os.path.exists(DEST_N0):
-    with open(DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
-    #with open(PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
-        reader = csv.reader(f, delimiter=";")
-        next(reader)
-        d={}
-        for row in reader:
-            value = int(float(row[0]))
-            observed_Nf.append(value)
-            if not row[1] in d:
-                d[row[1]]=[]
-            d[row[1]].append(value)
-        dict_means={}
-        for k in d.keys():
-            dict_means[k]=statistics.mean(d[k])
-        Nf_list=list(dict_means.values())
-        print(observed_Nf)
-        print(Nf_list)
-else:
-    print(" no scales")
+
+def get_nf():
+    global Nf_list, observed_Nf,DEST_N0
+    Nf_list=[]
+    observed_Nf = []
+    if os.path.exists(DEST_N0):
+        #with open(DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
+        with open(PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv") as f:
+            reader = csv.reader(f, delimiter=";")
+            next(reader)
+            d={}
+            for row in reader:
+                value = int(float(row[0]))
+                observed_Nf.append(value)
+                if not row[1] in d:
+                    d[row[1]]=[]
+                d[row[1]].append(value)
+            dict_means={}
+            for k in d.keys():
+                dict_means[k]=statistics.mean(d[k])
+            Nf_list=list(dict_means.values())
+            print(observed_Nf)
+            print(Nf_list)
+    else:
+        print(" no scales in "+DEST_N0)
+    return Nf_list, observed_Nf
+
+Nf_list, observed_Nf = get_nf()
+
 # DIFFERENTIATE INITIAL BN FROM EXP DATA IN THE LIKELIHOOD AND THE BN IN THE PRIOR WHICH AR HE BELIEFS
 bn_init_values = (1.149, 0.7)
 bn_priors = (1.45, 0.32)

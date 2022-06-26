@@ -18,6 +18,9 @@ def Bayesian():
 
         calcul_state = st.text("[INFO]: Calculating...")
         fig_trace, fig_posterior = calculate_bayesian(st.session_state.config)
+        if not fig_trace:
+            st.warning(fig_posterior)
+            return
 
         #image1 = Image.open(BASE_PATH+"/image_trace.png")
         #st.image(image1, caption='image trace')
