@@ -46,7 +46,6 @@ def Process_data():
         if not fe_raw_paths and not fe_processed_paths:
             st.write("no file to process, please provide file using upload component above")
         else:
-            st.write(" file exist"+ str(FE_paths)+" and "+str(EXP_paths))
             print("process ", FE_paths, EXP_paths)
             data_utils.process_data(FE_paths, EXP_paths)
             for test_path in fe_processed_paths:
