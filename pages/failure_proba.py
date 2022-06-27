@@ -3,7 +3,7 @@ from scripts.Failure_proba2 import calculate_failure
 from PIL import Image
 import os
 from scripts import data_utils
-
+from scripts import config
 BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
 
 
