@@ -14,8 +14,8 @@ def calculate_failure(gamma):
     _, expmtl_processed_paths = EXP_paths
     # Test_results_different_scales_CHP.txt
     print("exp:", expmtl_processed_paths, EXP_paths)
-    if not expmtl_processed_paths:
-        return False, "no processed files found. have runned the steps before ?"
+    #if not expmtl_processed_paths:
+    #    return False, "no processed files found. have runned the steps before ?"
 
     experimental_df = data_utils.read_processed_data(expmtl_processed_paths[0])
 
