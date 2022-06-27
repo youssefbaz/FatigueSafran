@@ -39,7 +39,7 @@ def Process_data():
     FE_paths, EXP_paths = data_utils.get_paths()
  
     if 'debug' in st.experimental_get_query_params():
-        st.write("path "+str(FE_paths)+" and "+str(EXP_paths))
+        st.write("path "+str(FE_paths)+" and "+str(EXP_paths)+" base path : "+config.BASE_PATH)
         
     process_button = st.button("Process the data")
         
