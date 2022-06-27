@@ -36,15 +36,18 @@ def Process_data():
             f.write(bytes_data.decode('utf-8'))
     os.sync()
 
-
+    FE_paths, EXP_paths = data_utils.get_paths()
+ 
+    if 'debug' in st.experimental_get_query_params():
+        st.write("path "+str(FE_paths)+" and "+str(EXP_paths))
+        
     process_button = st.button("Process the data")
-
+        
     if process_button:
 
         # Create a text element and let the reader know the data is loading.
         data_load_state = st.text("[INFO]: Processing data ...")
 
-        FE_paths, EXP_paths = data_utils.get_paths()
         fe_raw_paths, fe_processed_paths = FE_paths
         print("got paths", fe_raw_paths, fe_processed_paths)
         if not fe_raw_paths and not fe_processed_paths:
