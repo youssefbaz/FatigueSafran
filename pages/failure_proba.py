@@ -2,7 +2,7 @@ import streamlit as st
 from scripts.Failure_proba2 import calculate_failure
 from PIL import Image
 import os
-
+from scripts import data_utils
 
 BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "images"))
 
@@ -15,6 +15,8 @@ def failure_probability():
     if Failure_probability:
         gamma = st.session_state.config['gamma']
         status=st.text("calculating using gamma "+str(gamma))
+
+        _, EXP_paths = data_utils.get_paths()
         if not EXP_paths or (not EXP_paths[0] and not EXP_paths[1]):
             st.warning("No test result provided. We'll use Test_results_different_scales_CHP.")
             import shutil
