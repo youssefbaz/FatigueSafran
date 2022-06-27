@@ -15,6 +15,13 @@ def failure_probability():
     if Failure_probability:
         gamma = st.session_state.config['gamma']
         status=st.text("calculating using gamma "+str(gamma))
+        if not EXP_paths or (not EXP_paths[0] and not EXP_paths[1]):
+            st.warning("No test result provided. We'll use Test_results_different_scales_CHP.")
+            import shutil
+            print("=== copy "+config.DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv"+" ==> "+config.PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv")
+            shutil.copy(config.DEMO_PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv", config.PROCESSED_DATA_EXP+"/Test_results_different_scales_CHP.csv")
+            os.sync()
+            config.get_nf()
         fig, fig1 = calculate_failure(gamma)
         if not fig:
             st.warning("Error "+str(fig1))
